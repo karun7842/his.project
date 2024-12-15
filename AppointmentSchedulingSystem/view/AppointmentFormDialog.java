@@ -252,3 +252,28 @@ public class AppointmentFormDialog extends JDialog {
 		return appointment;
 	}
 }
+
+///
+private ArrayList<String> generateTimeSlotRanges() {
+    ArrayList<String> slots = new ArrayList<>();
+    int startHour = 9; // Start at 9 AM
+    int endHour = 17; // End at 5 PM
+    int interval = 15; // 15 minutes interval
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.HOUR_OF_DAY, startHour);
+    calendar.set(Calendar.MINUTE, 0);
+
+    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+
+    while (calendar.get(Calendar.HOUR_OF_DAY) < endHour || 
+           (calendar.get(Calendar.HOUR_OF_DAY) == endHour && calendar.get(Calendar.MINUTE) == 0)) {
+        Date startTime = calendar.getTime(); // Start of the slot
+        calendar.add(Calendar.MINUTE, interval); // Move to end of the slot
+        Date endTime = calendar.getTime();
+
+        String slotRange = timeFormat.format(startTime) + " - " + timeFormat.format(endTime);
+        slots.add(slotRange);
+    }
+    return slots;
+}
